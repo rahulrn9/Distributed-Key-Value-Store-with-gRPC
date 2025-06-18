@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      containers:
+        - name: kvstore
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          args:
+            - "--addr=$(POD_IP):{{ .Values.service.port }}"
+            - "--peer={{ .Release.Name }}-0.{{ .Release.Name }}.default.svc.cluster.local:{{ .Values.service.port }}"
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              name: grpc

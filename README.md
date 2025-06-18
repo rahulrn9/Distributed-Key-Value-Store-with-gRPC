@@ -1,0 +1,3 @@
+# Distributed Key-Value Store
+
+A peer-to-peer, distributed key-value store built with Go, gRPC, and Kademlia-inspired routing...

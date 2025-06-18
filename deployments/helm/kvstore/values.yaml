@@ -1,0 +1,7 @@
+replicaCount: 3
+image:
+  repository: gcr.io/your-project/kvstore
+  tag: "latest"
+  pullPolicy: IfNotPresent
+service:
+  port: 50051
